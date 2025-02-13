@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navigation-->
+    <div th:replace="~{fragments/navigator-client :: navigator-client}"></div>
+    <!-- Header -->
+    <header class="bg-dark py-3">
+      <div class="container px-4 px-lg-5 my-3">
+        <div class="text-center text-white">
+          <h1 class="display-4 fw-bolder">Shop in style</h1>
+          <p class="lead fw-normal text-white-50 mb-0">
+            With this shop hompeage template
+          </p>
+        </div>
+      </div>
+    </header>
+    <!-- Section-->
+    <section class="">
+      <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5">
+          <div
+            class="col-xxl-2 col-lg-3 col-md-4 col-sm-6 p-2"
+            th:each="product : ${products}"
+            style="max-width: 20%"
+          >
+            <div class="card h-100">
+              <!-- Product image-->
+              <img
+                class="card-img-top"
+                th:src="@{${product.image}}"
+                alt="..."
+                style="height: 120px; object-fit: cover"
+              />
+              <!-- Product details-->
+              <div class="card-body p-4">
+                <div class="text-center">
+                  <!-- Product name-->
+                  <h5 class="fw-bolder" th:text="${product.name}"></h5>
+                  <!-- Product price-->
+                  <span th:text="${product.price}"></span>$
+                </div>
+              </div>
+              <!-- Product actions-->
+              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center">
+                  <a class="btn btn-outline-dark mt-auto" href="#"
+                    >Add to cart</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="d-flex gap-1">
+              <div
+                class="d-flex justify-content-center align-items-center p-2 border border-secondary-subtle rounded-circle me-2"
+                th:classappend="${currentPage == 1 || totalPages == 0} ? 'opacity-50 pe-none'"
+                th:onclick="|window.location.href='/categories/' + ${categoryId} + '?page=' + ${currentPage-1}|"
+                style="width: 35px; height: 35px; cursor: pointer"
+              >
+                <i class="fa-solid fa-chevron-left" style="font-size: 12px"></i>
+              </div>
+              <div th:each="page : ${#numbers.sequence(1, totalPages)}">
+                <div
+                  class="d-flex justify-content-center align-items-center p-2 border border-secondary-subtle rounded-circle"
+                  th:classappend="(${currentPage == page} ? 'bg-info text-white') + ' ' + (${page == 0} ? 'd-none' : '')"
+                  th:onclick="|window.location.href='/categories/' + ${categoryId} + '?page=' + ${page}|"
+                  style="width: 35px; height: 35px; cursor: pointer"
+                >
+                  <span th:text="${page}"></span>
+                </div>
+              </div>
+              <div
+                class="d-flex justify-content-center align-items-center p-2 border border-secondary-subtle rounded-circle ms-2"
+                style="width: 35px; height: 35px; cursor: pointer"
+                th:classappend="${currentPage == totalPages || totalPages == 0} ? 'opacity-50 pe-none'"
+                th:onclick="|window.location.href='/categories/' + ${categoryId} + '?page=' + ${currentPage+1}|"
+              >
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 12px"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer-->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>

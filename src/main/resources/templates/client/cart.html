@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <!-- Navigation-->
+    <div th:replace="~{fragments/navigator-client :: navigator-client}"></div>
+    <!-- Section-->
+    <section class="h-100 h-custom">
+        <div class="container py-3 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+              <div
+                class="card card-registration card-registration-2"
+                style="border: none"
+              >
+                <div class="card-body p-0"
+                style="border: none">
+                  <div class="row g-0">
+                    <div class="col-lg-8">
+                      <div class="p-4">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-4"
+                        >
+                          <h1 class="fw-bold mb-0" style="font-size: 1.5rem;">Shopping Cart</h1>
+                          <h6 class="mb-0 text-muted" style="font-size: 0.9rem;">3 items</h6>
+                        </div>
+                        <hr class="my-3" />
+                        
+                        <!-- Custom item -->
+                        <div
+                          class="row mb-3 d-flex justify-content-between align-items-center"
+                          th:each="orderDetail : ${cart}"
+                        >
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <img
+                              src="https://i.pinimg.com/736x/db/85/99/db85998510e152f6d02214da2b70ab60.jpg"
+                              class="img-fluid rounded-3"
+                              style="width: 100%; height: 100px; object-fit: cover;"
+                              alt="Cotton T-shirt"
+                            />
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <div class="d-flex gap-2">
+                              <h6 class="text-muted" style="font-size: 0.85rem;" th:text="${orderDetail.product.name}"></h6>
+                              <h6 class="text-muted" style="font-size: 0.85rem;">$<span th:text="${orderDetail.product.price}"></span></h6>
+                            </div>
+                            <h6 class="mb-0" style="font-size: 0.95rem;" th:text="${orderDetail.product.description}"></h6>
+                          </div>
+                          <div class="ps-5 col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <form th:action="@{'/cart/orders/' + ${orderDetail.order.id} + '/products/' + ${orderDetail.product.id} + '/update-quantity'}" method="post" class="d-flex align-items-center">
+                            <input type="hidden" name="orderId" th:value="${orderDetail.id}" />
+
+                            <button type="submit" name="action" value="decrease" 
+                                    class="btn btn-sm btn-outline-secondary"
+                                    th:classappend="${orderDetail.quantity <= 1 ? 'pe-none opacity-50' : ''}"
+                                    >−</button>
+                            
+                            <input type="number" name="quantity" 
+                                  th:value="${orderDetail.quantity}" 
+                                  class="form-control form-control-sm mx-1 text-center"
+                                  style="width: 50px; font-size: 0.8rem;" readonly />
+                            
+                            <button type="submit" name="action" value="increase" 
+                                    class="btn btn-sm btn-outline-secondary">+</button>
+                        </form>
+
+                          </div>
+                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h6 class="mb-0" style="font-size: 0.95rem;">€ <span th:text="${orderDetail.quantity * orderDetail.product.price}"></span></h6>
+                          </div>
+                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a class="text-muted" style="font-size: 1rem; cursor: pointer;"
+                              th:onclick="|window.location.href='/cart/orders/' + ${orderDetail.order.id} + '/products/' + ${orderDetail.product.id} + '/delete'|"  
+                            >
+                              <i class="fa-solid fa-trash" style="color: #fb5656;"></i></a>
+                          </div>
+                        </div>
+    
+                        <hr class="my-3" />
+      
+                        <div class="pt-4">
+                          <h6 class="mb-0">
+                            <a href="#!" class="text-body" style="font-size: 0.95rem;"
+                              ><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a
+                            >
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+      
+                    <div class="col-lg-4 bg-body-tertiary">
+                      <div class="p-4">
+                        <h3 class="fw-bold mb-4 mt-2 pt-1" style="font-size: 1.25rem;">Summary</h3>
+                        <hr class="my-3" />
+
+                        <div class="d-flex justify-content-between mb-3" th:each="orderDetail : ${cart}">
+                          <div class="d-flex gap-2">
+                            <h5 class="text-uppercase" style="font-size: 0.85rem;" th:text="${orderDetail.product.name}"></h5>
+                            <div class="d-flex">
+                              <h5 class="text-uppercase" style="font-size: 0.85rem;">x</h5>
+                              <h5 class="text-uppercase" style="font-size: 0.85rem;" th:text="${orderDetail.quantity}"></h5>
+                            </div>
+                          </div>
+                          <h5 style="font-size: 0.95rem;">€ <span th:text="${orderDetail.quantity * orderDetail.product.price}"></span></h5>
+                        </div>
+      
+                        <h5 class="text-uppercase mb-2" style="font-size: 0.9rem;">Address</h5>
+      
+                        <!-- <div class="mb-3 pb-1">
+                          <select data-mdb-select-init class="form-control form-control-sm" style="font-size: 0.85rem;">
+                            <option value="1">Standard-Delivery- €5.00</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                          </select>
+                        </div> -->
+                        
+                        <div class="d-flex justify-content-between">
+                          <h5 class="text-uppercase mb-2" style="font-size: 0.9rem;">SHIPPING FEE</h5>
+                          <h5 class="text-uppercase mb-2" style="font-size: 0.9rem;">€ <span th:text="${#aggregates.sum(cart.![quantity * product.price]) * 0.05}"></span></h5>
+                        </div>
+      
+                        <!-- <div class="mb-4">
+                          <div data-mdb-input-init class="form-outline">
+                            <input
+                              type="text"
+                              id="form3Examplea2"
+                              class="form-control form-control-sm"
+                              style="font-size: 0.85rem;"
+                            />
+                            <label class="form-label" for="form3Examplea2" style="font-size: 0.85rem;">Enter your code</label>
+                          </div>
+                        </div> -->
+      
+                        <hr class="my-3" />
+      
+                        <div class="d-flex justify-content-between mb-4">
+                          <h5 class="text-uppercase" style="font-size: 0.9rem;">Total price</h5>
+                          <h5 style="font-size: 0.95rem;">€ <span th:text="${#aggregates.sum(cart.![quantity * product.price]) + #aggregates.sum(cart.![quantity * product.price]) * 0.05}"></span></h5>
+                        </div>
+      
+                        <button
+                          type="button"
+                          class="btn btn-dark btn-block btn-lg"
+                          style="font-size: 0.85rem; padding: 0.75rem 1.5rem;"
+                        >
+                          Checkout
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+    <!-- Footer-->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
