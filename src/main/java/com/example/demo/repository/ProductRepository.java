@@ -12,5 +12,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findProductsByCategoryId(Integer categoryId, Pageable pageable);
-    Page<Product> findProductsByIsDeletedIsFalse(Pageable pageable);
+
+    List<Product> findProductsByIsDeletedIsFalse();
 }

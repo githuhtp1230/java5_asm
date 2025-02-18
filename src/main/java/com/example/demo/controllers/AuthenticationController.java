@@ -47,7 +47,7 @@ public class AuthenticationController {
         return "authentication/register";
     }
 
-    @GetMapping("login")
+    @GetMapping("login-form")
     public String login(Model model, @ModelAttribute("userLoginRequest") UserLoginRequest userLoginRequest) {
         return "authentication/login";
     }
@@ -55,13 +55,15 @@ public class AuthenticationController {
     @PostMapping("login")
     public String loginPost(Model model, @ModelAttribute("userLoginRequest") UserLoginRequest userLoginRequest,
             HttpServletResponse httpServletResponse) {
-        try {
-            authenticationService.login(userLoginRequest, httpServletResponse);
-            return "redirect:login";
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-        }
-        return "authentication/login";
+        // try {
+        // System.out.println("hello");
+        // authenticationService.login(userLoginRequest, httpServletResponse);
+        // return "redirect:/";
+        // } catch (Exception e) {
+        // model.addAttribute("errorMessage", e.getMessage());
+        // }
+        // return "authentication/login";
+        return "cc";
     }
 
     @PostMapping("register")

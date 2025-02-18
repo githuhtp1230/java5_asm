@@ -18,4 +18,18 @@ public class ProductService {
         product.setIsDeleted(true);
         productRepository.save(product);
     }
+
+    public Product getProductById(int productId) {
+        return productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    public void saveProduct(Product product) {
+        product.setIsDeleted(false);
+        productRepository.save(product);
+    }
+
+    public void updateProduct(Product product) {
+        product.setIsDeleted(false);
+        productRepository.save(product);
+    }
 }

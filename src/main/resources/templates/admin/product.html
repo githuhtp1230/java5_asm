@@ -34,38 +34,156 @@
       <div th:replace="~{fragments/navigator-admin :: navigator-admin}"></div>
       <!-- Section -->
       <div class="d-flex flex-grow-1">
-        <table class="table text-center align-middle">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Id</th>
-              <th scope="col">Image</th>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Review</th>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="product, iterStat : ${products}">
-              <th scope="row" th:text="${iterStat.index + 1}"></th>
-              <td th:text="${product.id}"></td>
-              <td>
-                <img
-                  th:src="${product.image}"
-                  alt="Avatar"
-                  width="80"
-                  height="80"
-                  style="object-fit: cover"
+        <div class="w-100">
+          <div>
+            <div class="mb-2"></div>
+            <form action="/admin/products" method="post" th:object="${product}">
+              <div th:if="${isEditing}">
+                <label for="id">Id Product</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder="Name product"
+                  th:field="*{id}"
                 />
-              </td>
-              <td th:text="${product.name}"></td>
-              <td th:text="${product.price}"></td>
-              <td th:text="${product.review}"></td>
-              <td th:text="${product.description}"></td>
-            </tr>
-          </tbody>
-        </table>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <label for="name">Name Product</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="Name product"
+                    th:field="*{name}"
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="price">Price</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="price"
+                    placeholder="Price "
+                    th:field="*{price}"
+                  />
+                </div>
+              </div>
+              <div class="mb-2"></div>
+              <div class="row">
+                <div class="form-group col-6">
+                  <label for="review">Review</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="review"
+                    placeholder="1234 Main St"
+                    th:field="*{review}"
+                  />
+                </div>
+                <div class="form-group col-6">
+                  <label for="inputAddress2">Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    placeholder="Description"
+                    th:field="*{description}"
+                  />
+                </div>
+              </div>
+              <div>
+                <label for="category">Category</label>
+                <select
+                  id="category"
+                  class="form-control"
+                  th:field="*{category}"
+                >
+                  <option value="">Select Category</option>
+                  <option
+                    th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"
+                  ></option>
+                </select>
+              </div>
+              <div class="mb-2"></div>
+              <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" name="image" id="image" />
+              </div>
+              <div class="mb-2"></div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                th:if="${!isEditing}"
+                name="action"
+                value="add"
+              >
+                Add
+              </button>
+
+              <!-- Nếu isEditing = true -> hiển thị nút Update và Cancel -->
+              <div th:if="${isEditing}">
+                <button
+                  name="action"
+                  value="update"
+                  type="submit"
+                  class="btn btn-success"
+                >
+                  Update
+                </button>
+                <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+              </div>
+            </form>
+          </div>
+          <table class="table text-center align-middle">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Review</th>
+                <th scope="col">Description</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="product, iterStat : ${products}">
+                <th scope="row" th:text="${iterStat.index + 1}"></th>
+                <td th:text="${product.id}"></td>
+                <td>
+                  <img
+                    th:src="${product.image}"
+                    alt="Avatar"
+                    width="80"
+                    height="80"
+                    style="object-fit: cover"
+                  />
+                </td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.review}"></td>
+                <td th:text="${product.description}"></td>
+                <td>
+                  <a
+                    th:href="@{'/admin/products/' + ${product.id} + '/edit'}"
+                    class="btn btn-primary"
+                    >Edit</a
+                  >
+                  <a
+                    th:href="@{'/admin/products/' + ${product.id} + '/delete'}"
+                    class="btn btn-danger"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="bg-body-tertiary"></div>
       </div>
     </div>

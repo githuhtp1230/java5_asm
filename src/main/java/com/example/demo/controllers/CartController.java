@@ -46,5 +46,4 @@ public class CartController {
     public List<OrderDetail> getCart() {
         return orderDetailRepository.getCart(1);
     }
-
 }

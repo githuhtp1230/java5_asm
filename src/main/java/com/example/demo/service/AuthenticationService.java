@@ -1,11 +1,17 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserLoginRequest;
 import com.example.demo.dto.UserRegisterRequest;
 import com.example.demo.entity.User;
+import com.example.demo.models.CustomUserDetails;
 import com.example.demo.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,5 +36,13 @@ public class AuthenticationService {
         if (user == null) {
             throw new RuntimeException("Email hoặc mật khẩu không chính xác");
         }
+
+        CustomUserDetails customUserDetails = new CustomUserDetails(request.getEmail(), request.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                customUserDetails, null, customUserDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
     }
 }
