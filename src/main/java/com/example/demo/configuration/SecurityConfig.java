@@ -36,12 +36,12 @@ public class SecurityConfig {
                 .failureUrl("/")
                 .permitAll());
 
-        // http.logout(logout -> logout
-        // .logoutUrl("/logout")
-        // .logoutSuccessUrl("/")
-        // .invalidateHttpSession(true)
-        // .deleteCookies("JSESSIONID")
-        // .permitAll());
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll());
 
         // http.csrf(AbstractHttpConfigurer::disable);
 

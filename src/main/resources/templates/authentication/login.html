@@ -50,6 +50,7 @@
                 method="post"
                 th:object="${userLoginRequest}"
               >
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div
                   class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start"
                 >

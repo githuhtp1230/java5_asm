@@ -37,10 +37,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // return new CustomUserDetails
 
-        System.out.println("============================================================================");
-        return new CustomUserDetails(
-                "cc",
-                "cc",
-                List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        throw new RuntimeException("Hello");
     }
 }

@@ -2,6 +2,8 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,9 @@ import com.example.demo.repository.OrderRepository;
 import com.example.demo.service.AuthenticationService;
 import com.example.demo.service.CartService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -54,16 +58,14 @@ public class AuthenticationController {
 
     @PostMapping("login")
     public String loginPost(Model model, @ModelAttribute("userLoginRequest") UserLoginRequest userLoginRequest,
-            HttpServletResponse httpServletResponse) {
-        // try {
-        // System.out.println("hello");
-        // authenticationService.login(userLoginRequest, httpServletResponse);
-        // return "redirect:/";
-        // } catch (Exception e) {
-        // model.addAttribute("errorMessage", e.getMessage());
-        // }
-        // return "authentication/login";
-        return "cc";
+            HttpServletResponse httpServletResponse, HttpSession httpSession) {
+        try {
+            authenticationService.login(userLoginRequest, httpServletResponse, httpSession);
+            return "redirect:/";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "authentication/login";
     }
 
     @PostMapping("register")
@@ -76,6 +78,13 @@ public class AuthenticationController {
         }
         return "redirect:/login";
         // return "authentication/register";
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        new SecurityContextLogoutHandler().logout(request, response,
+                SecurityContextHolder.getContext().getAuthentication());
+        return "redirect:/";
     }
 
 }
